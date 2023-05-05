@@ -1,16 +1,17 @@
 #!/bin/bash
 
-FOLDER_PATH="$HOME/.pandoc/templates/"
+TEMPLTE_FOLDER_PATH="$HOME/.pandoc/templates/"
 
-LETTER_TEMPLATE="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/templates/letter-din5008/letter.latex?token=GHSAT0AAAAAAB77JDDYINXJNFBLEQNLJBRMZCUB4YQ"
+GIT_LETTER_TEMPLATE="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/templates/letter-din5008/letter.latex?token=GHSAT0AAAAAAB77JDDYINXJNFBLEQNLJBRMZCUB4YQ"
+LETTER_FILE_NAME="letter.latex"
 
 # Create template directory if they don't exist
 create_template_directory(){
-    if [ -d "$FOLDER_PATH" ]; then
+    if [ -d "$TEMPLTE_FOLDER_PATH" ]; then
         echo "Template directory already exists"
     else
-        echo "Create $FOLDER_PATH"
-        mkdir -p $FOLDER_PATH
+        echo "Create $TEMPLTE_FOLDER_PATH"
+        mkdir -p $TEMPLTE_FOLDER_PATH
     fi
 }
 
@@ -35,11 +36,13 @@ is_pip_installed() {
 
 # Update 
 install_update_templates(){
-    if [ -e $FOLDER_PATH/letter.latex ]; then
-        # curl -L $LETTER_TEMPLATE -o "$FOLDER_PATH/letter.txt"
-        echo "exists"
+    echo "Download and Install template files"
+    if [ -e $TEMPLTE_FOLDER_PATH/$LETTER_FILE_NAME ]; then
+        # backup last old file
+        mv $TEMPLTE_FOLDER_PATH/$LETTER_FILE_NAME $TEMPLTE_FOLDER_PATH/$LETTER_FILE_NAME.bak
+        curl -L $GIT_LETTER_TEMPLATE -o "$TEMPLTE_FOLDER_PATH/$LETTER_FILE_NAME"
     else
-        echo "nicht da"
+        curl -L $GIT_LETTER_TEMPLATE -o "$TEMPLTE_FOLDER_PATH/$LETTER_FILE_NAME"
     fi
 }
 
@@ -59,6 +62,18 @@ if [ "$1" == "--install" ]; then
     create_template_directory
     # Install templates
     install_update_templates
+elif [ "$1" == "--new" ]; then
+    echo "Creating file and folder structur"
+    mkdir assets
+    if [ -n "$2" ] && [ "$2" == "letter" ]; then
+        echo "Create letter template"
+
+    elif [ -n "$2" ] && [ "$2" == "eisvogel" ]; then
+        echo "Create eisvogel template"
+        
+    else
+        echo "Create default template";
+
 else
     echo "$1: invalid option"
     echo "Try '--help' for more information."
