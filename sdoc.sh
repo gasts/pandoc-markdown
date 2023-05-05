@@ -7,9 +7,9 @@ LETTER_TEMPLATE_NAME="letter.latex"
 LETTER_EXAMPLE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/examples/letter-din5008/letter-minimal/letter.md?token=GHSAT0AAAAAACBVW7FYRRHQPLM63ZQIZG22ZCVBZIA"
 INVOICE_EXAMPLE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/examples/letter-din5008/letter-invoice/letter.md?token=GHSAT0AAAAAACBVW7FZ3ECI6PGP75HIPZHOZCVCNUQ"
 
-EISVOGEL_TEMPLATE_GIT=""
+EISVOGEL_TEMPLATE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/templates/eisvogel/eisvogel.latex?token=GHSAT0AAAAAACBVW7FZXF5RQLHP3UY3D3QIZCVC2EQ"
 EISVOGEL_TEMPLATE_NAME="eisvogel.latex"
-EISVOGEL_EXAMPLE_GIT=""
+EISVOGEL_EXAMPLE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/examples/eisvogel/document.md?token=GHSAT0AAAAAACBVW7FYODMYNRUTZ2FMO4DGZCVCZQQ"
 
 DEFAULT_TEMPLATE_GIT=""
 DEFAULT_TEMPLATE_NAME="default.latex"
