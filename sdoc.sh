@@ -1,29 +1,46 @@
 #!/bin/bash
 
-SYS_TEMPLTE_PATH="$HOME/.pandoc/templates/"
+LOCK_FILE=/tmp/sdoc.lock
 
-LETTER_TEMPLATE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/templates/letter-din5008/letter.latex?token=GHSAT0AAAAAAB77JDDYINXJNFBLEQNLJBRMZCUB4YQ"
+SYS_TEMPLTE_PATH="$HOME/.pandoc/templates"
+SYS_SCRIPT_PATH="$HOME/.local/sdoc"
+
+LETTER_TEMPLATE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/templates/letter-din5008/letter.latex?token=GHSAT0AAAAAACBVW7FY3L3BUBOXXVZ6DXKKZCVDY2Q"
 LETTER_TEMPLATE_NAME="letter.latex"
 LETTER_EXAMPLE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/examples/letter-din5008/letter-minimal/letter.md?token=GHSAT0AAAAAACBVW7FYRRHQPLM63ZQIZG22ZCVBZIA"
+LETTER_EXAMPLE_NAME="letter.md"
 INVOICE_EXAMPLE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/examples/letter-din5008/letter-invoice/letter.md?token=GHSAT0AAAAAACBVW7FZ3ECI6PGP75HIPZHOZCVCNUQ"
+INVOICE_EXAMPLE_NAME="invoice.md"
 
 EISVOGEL_TEMPLATE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/templates/eisvogel/eisvogel.latex?token=GHSAT0AAAAAACBVW7FZXF5RQLHP3UY3D3QIZCVC2EQ"
 EISVOGEL_TEMPLATE_NAME="eisvogel.latex"
 EISVOGEL_EXAMPLE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/examples/eisvogel/document.md?token=GHSAT0AAAAAACBVW7FYODMYNRUTZ2FMO4DGZCVCZQQ"
+EISVOGEL_EXAMPLE_NAME="report.md"
 
-DEFAULT_TEMPLATE_GIT=""
+DEFAULT_TEMPLATE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/templates/default/default.latex?token=GHSAT0AAAAAACBVW7FYJQMI6RR465AMNYDCZCVC4EA"
 DEFAULT_TEMPLATE_NAME="default.latex"
-DEFAULT_EXAMPLE_GIT=""
+DEFAULT_EXAMPLE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/examples/default/document.md?token=GHSAT0AAAAAACBVW7FY5OON4TZ6WHO34SEIZCVC4UA"
+DEFAULT_EXAMPLE_NAME="document.md"
 
 FORMAT="%-30s %s\n"
 
-# Create template directory if they don't exist
-create_template_directory(){
-    if [ -d "$SYS_TEMPLTE_PATH" ]; then
-        echo "Template directory already exists"
+is_inotify_installed() {
+    if [ -z "$(which inotifywait)" ]; then
+        echo "inotifywait not installed."
+        echo "In most distros, it is available in the inotify-tools package."
+        echo "Please install and try again."
+        exit 1
+    fi
+}
+
+# Create directory if they don't exist
+create_directory(){
+    local path="$1"
+    if [ -d "$1" ]; then
+        echo "Directory $1 already exists"
     else
-        echo "Create $SYS_TEMPLTE_PATH"
-        mkdir -p $SYS_TEMPLTE_PATH
+        echo "Create $1"
+        mkdir -p $1
     fi
 }
 
@@ -36,7 +53,7 @@ is_pip_package_installed() {
     fi
 }
 
-# Function to check if pip is installed
+# Function to check if python pip is installed
 is_pip_installed() {
     if which pip &> /dev/null; then
         return 0
@@ -46,9 +63,31 @@ is_pip_installed() {
     fi
 }
 
-# Update 
+copy_script_to_local(){
+    local script_path="$(realpath $0)"
+    local target_path="$HOME/.local/sdoc/$(basename $0)"
+    create_directory $SYS_SCRIPT_PATH
+    echo "Copying script from $script_path to $target_path"
+    cp "$script_path" "$target_path"
+}
+
+# Function create bash alias
+create_bash_alias(){
+    local bashrc_file="$HOME/.bashrc"
+    local entry="alias sdoc=$SYS_SCRIPT_PATH/$(basename $0)"
+    # exist alias?
+    if grep -q "$entry" "$bashrc_file"; then
+        echo "Entry '$entry' already exists in $bashrc_file"
+    else
+        echo "Adding entry '$entry' to $bashrc_file"
+        echo "$entry" >> "$bashrc_file"
+        source "$bashrc_file"
+    fi
+}
+
+# install or update templates 
 install_update_templates(){
-    echo "Download and Install template files"
+    echo "Install or update template files"
     # letter template
     if [ -e $SYS_TEMPLTE_PATH/$LETTER_TEMPLATE_NAME ]; then
         echo "Backup $SYS_TEMPLTE_PATH/$LETTER_TEMPLATE_NAME to $SYS_TEMPLTE_PATH/$LETTER_TEMPLATE_NAME.bak"
@@ -64,13 +103,27 @@ install_update_templates(){
         echo "Backup $SYS_TEMPLTE_PATH/$DEFAULT_TEMPLATE_NAME to $SYS_TEMPLTE_PATH/$DEFAULT_TEMPLATE_NAME.bak"
         mv $SYS_TEMPLTE_PATH/$DEFAULT_TEMPLATE_NAME $SYS_TEMPLTE_PATH/$DEFAULT_TEMPLATE_NAME.bak
     fi
-    curl -O $LETTER_TEMPLATE_GIT
-    curl -O $EISVOGEL_TEMPLATE_GIT
-    curl -O $DEFAULT_TEMPLATE_GIT
+    echo "Download $LETTER_TEMPLATE_NAME"
+    curl -L $LETTER_TEMPLATE_GIT -o "$SYS_TEMPLTE_PATH/$LETTER_TEMPLATE_NAME"
+    echo "Download $EISVOGEL_TEMPLATE_NAME"
+    curl -L $EISVOGEL_TEMPLATE_GIT -o "$SYS_TEMPLTE_PATH/$EISVOGEL_TEMPLATE_NAME"
+    echo "Download $DEFAULT_TEMPLATE_NAME"
+    curl -L $DEFAULT_TEMPLATE_GIT -o "$SYS_TEMPLTE_PATH/$DEFAULT_TEMPLATE_NAME"
+    
+    echo "Download $DEFAULT_EXAMPLE_NAME"
+    curl -L $DEFAULT_EXAMPLE_GIT -o "$SYS_SCRIPT_PATH/$DEFAULT_EXAMPLE_NAME"
+    echo "Download $EISVOGEL_EXAMPLE_NAME";
+    curl -L $EISVOGEL_EXAMPLE_GIT -o "$SYS_SCRIPT_PATH/$EISVOGEL_EXAMPLE_NAME"
+    echo "Download $LETTER_EXAMPLE_NAME"
+    curl -L $LETTER_EXAMPLE_GIT -o "$SYS_SCRIPT_PATH/$LETTER_EXAMPLE_NAME"
+    echo "Download $INVOICE_EXAMPLE_NAME"
+    curl -L $INVOICE_EXAMPLE_GIT -o "$SYS_SCRIPT_PATH/$INVOICE_EXAMPLE_NAME"
 }
 
+# ###
 # Parse command line arguments
-if [ "$1" == "--install" ]; then
+# ###
+if [ "$1" == "--install" ] || [ "$1" == "-i" ]; then
     # Check if requirements are installed
     if is_pip_installed; then
         if is_pip_package_installed "pandoc-latex-environment"; then
@@ -81,32 +134,74 @@ if [ "$1" == "--install" ]; then
             pip3 install pandoc-latex-environment
         fi
     fi
-    # Check if template directory exists
-    create_template_directory
+    # Check if directorys exists
+    create_directory $SYS_TEMPLTE_PATH/
+    create_directory $SYS_SCRIPT_PATH/
     # Install templates
     install_update_templates
-elif [ "$1" == "--new" ]; then
-    echo "Creating file and folder structur"
-    echo "Create assets directory"
+    # copy script to .local
+    copy_script_to_local
+    # create bashrc alias
+    create_bash_alias
+
+elif [ "$1" == "--new" ] || [ "$1" == "-n" ]; then
+    echo "Create new project structur"
     mkdir assets
     if [ -n "$2" ] && [ "$2" == "letter" ]; then
         echo "Create letter.md template"
-        curl -O $LETTER_EXAMPLE_GIT
+        cp $SYS_SCRIPT_PATH/$LETTER_EXAMPLE_NAME .
+    elif [ -n "$2" ] && [ "$2" == "invoice" ]; then
+        echo "Create invoice.md template"
+        cp $SYS_SCRIPT_PATH/$INVOICE_EXAMPLE_NAME .
     elif [ -n "$2" ] && [ "$2" == "eisvogel" ]; then
-        echo "Create eisvogel template"
-        curl -O $EISVOGEL_EXAMPLE_GIT
+        echo "Create report.md template"
+        cp $SYS_SCRIPT_PATH/$EISVOGEL_EXAMPLE_NAME .
     else
-        echo "Create default template";
-        curl -O $DEFAULT_EXAMPLE_GIT
+        echo "Create default.md template";
+        cp $SYS_SCRIPT_PATH/$DEFAULT_EXAMPLE_NAME .
     fi
+
+elif [ "$1" == "--update" ] || [ "$1" == "-u" ]; then
+    install_update_templates
+
+elif [ "$1" == "--watch" ] || [ "$1" == "-w" ]; then
+    is_inotify_installed
+    # delete old lock file
+    rm "${LOCK_FILE}"
+    # watcher for saved *.md files
+    inotifywait --monitor --format "%f" --event modify ./ \
+    | while read changed; do
+        if [[ "${changed##*.}" == "md" ]]; then
+            if [ -e "${LOCK_FILE}" ] && kill -0 $(cat "${LOCK_FILE}") 2> /dev/null; then
+                echo "Script ist current runnung"
+            else
+                # create lock file
+                echo $$ > "${LOCK_FILE}"
+                # execute pandoc command
+                filename=$(basename -- "$changed")
+                filename="${filename%.*}"
+                pandoc $filename.md -o $filename.pdf --template="default" --filter pandoc-latex-environment --resource-path=./assets/
+                echo "Document build as $filename.pdf"
+                sleep 2
+                # delete lock file
+                rm "${LOCK_FILE}"
+            fi
+        fi
+    done
+    
+
 elif [ "$1" == "--help" ] || [ "$1" == "-h" ]; then
     echo ""
     echo "Usage:"
-    printf "${FORMAT}" "sdoc --install" "install requirements"
-    printf "${FORMAT}" "sdoc --new" "create default project"
-    printf "${FORMAT}" "sdoc --new <typ>" "typ is letter, invoice or eisvogel"
+    printf "${FORMAT}" "sdoc -i, --install" "install project requirements"
+    printf "${FORMAT}" "sdoc -n, --new" "create default project"
+    printf "${FORMAT}" "sdoc -n, --new <typ>" "typ is default, letter, invoice or eisvogel"
+    printf "${FORMAT}" "sdoc -u, --update" "update templates"
+    printf "${FORMAT}" "sdoc -w, --watch" "blablabla"
+    printf "${FORMAT}" "sdoc -nw" "compination --new and --watch"
+
 else
     echo "$1: invalid option"
-    echo "Try '--help' for more information."
+    echo "Try '--help' or '-h' for more information."
     exit 1
 fi
