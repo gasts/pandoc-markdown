@@ -81,6 +81,8 @@ get_template_type() {
     do
         if [[ $row == template* ]]; then
             template_type="${row#*: }"
+            template_type=${template_type%\"}
+            template_type=${template_type#\"}
             break
         fi
         if [[ $counter -eq 5 ]]; then
@@ -201,7 +203,6 @@ elif [ "$1" == "--watch" ] || [ "$1" == "-w" ]; then
                 filename=$(basename -- "$changed")
                 filename="${filename%.*}"
                 template_typ=$(get_template_type "$filename.md")
-                echo $template_typ
                 pandoc $filename.md -o $filename.pdf --template=$template_typ --filter pandoc-latex-environment --resource-path=./assets/ --listings
                 echo "Document build as $filename.pdf"
                 sleep 2
@@ -219,7 +220,7 @@ elif [ "$1" == "--help" ] || [ "$1" == "-h" ]; then
     printf "${FORMAT}" "sdoc -n, --new" "create default project"
     printf "${FORMAT}" "sdoc -n, --new <typ>" "typ is default, letter, invoice or eisvogel"
     printf "${FORMAT}" "sdoc -u, --update" "update templates"
-    printf "${FORMAT}" "sdoc -w, --watch" "blablabla"
+    printf "${FORMAT}" "sdoc -w, --watch" "Watch for changes and build"
     printf "${FORMAT}" "sdoc -nw" "compination --new and --watch"
 
 else
