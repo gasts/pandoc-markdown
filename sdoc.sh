@@ -212,7 +212,7 @@ elif [ "$1" == "--watch" ] || [ "$1" == "-w" ]; then
                     pandoc $filename.md -o $filename.pdf --template=$template_typ --filter pandoc-latex-environment --resource-path=./assets/ --listings
                 fi
                 
-                sleep 2
+                sleep 4
                 # delete lock file
                 rm "${LOCK_FILE}"
             fi
