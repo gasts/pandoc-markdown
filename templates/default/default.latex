@@ -106,6 +106,13 @@
     }
     {\end{multicols}}
 
+% Bilder
+\usepackage{caption}
+	\captionsetup[figure]{
+      name=,
+      labelsep=none,
+      labelformat=empty}
+
 \title{}
 \author{$author$}
 
