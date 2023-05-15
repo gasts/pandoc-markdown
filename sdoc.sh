@@ -5,21 +5,21 @@ LOCK_FILE=/tmp/sdoc.lock
 SYS_TEMPLTE_PATH="$HOME/.pandoc/templates"
 SYS_SCRIPT_PATH="$HOME/.local/sdoc"
 
-LETTER_TEMPLATE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/templates/letter-din5008/letter.latex?token=GHSAT0AAAAAACBVW7FY3L3BUBOXXVZ6DXKKZCVDY2Q"
+LETTER_TEMPLATE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/templates/letter-din5008/letter.latex"
 LETTER_TEMPLATE_NAME="letter.latex"
-LETTER_EXAMPLE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/examples/letter-din5008/letter-minimal/letter.md?token=GHSAT0AAAAAACBVW7FYRRHQPLM63ZQIZG22ZCVBZIA"
+LETTER_EXAMPLE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/examples/letter-din5008/letter-minimal/letter.md"
 LETTER_EXAMPLE_NAME="letter.md"
-INVOICE_EXAMPLE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/examples/letter-din5008/letter-invoice/letter.md?token=GHSAT0AAAAAACBVW7FZ3ECI6PGP75HIPZHOZCVCNUQ"
+INVOICE_EXAMPLE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/examples/letter-din5008/letter-invoice/letter.md"
 INVOICE_EXAMPLE_NAME="invoice.md"
 
-EISVOGEL_TEMPLATE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/templates/eisvogel/eisvogel.latex?token=GHSAT0AAAAAACBVW7FZXF5RQLHP3UY3D3QIZCVC2EQ"
+EISVOGEL_TEMPLATE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/templates/eisvogel/eisvogel.latex"
 EISVOGEL_TEMPLATE_NAME="eisvogel.latex"
-EISVOGEL_EXAMPLE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/examples/eisvogel/document.md?token=GHSAT0AAAAAACBVW7FYODMYNRUTZ2FMO4DGZCVCZQQ"
+EISVOGEL_EXAMPLE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/examples/eisvogel/document.md"
 EISVOGEL_EXAMPLE_NAME="report.md"
 
-DEFAULT_TEMPLATE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/templates/default/default.latex?token=GHSAT0AAAAAACBVW7FZN2YY4BHPHAVLXPT4ZDCCLLA"
+DEFAULT_TEMPLATE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/templates/default/default.latex"
 DEFAULT_TEMPLATE_NAME="default.latex"
-DEFAULT_EXAMPLE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/examples/default/document.md?token=GHSAT0AAAAAACBVW7FY5OON4TZ6WHO34SEIZCVC4UA"
+DEFAULT_EXAMPLE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/examples/default/document.md"
 DEFAULT_EXAMPLE_NAME="document.md"
 
 FORMAT="%-30s %s\n"
