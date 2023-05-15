@@ -17,7 +17,7 @@ EISVOGEL_TEMPLATE_NAME="eisvogel.latex"
 EISVOGEL_EXAMPLE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/examples/eisvogel/document.md?token=GHSAT0AAAAAACBVW7FYODMYNRUTZ2FMO4DGZCVCZQQ"
 EISVOGEL_EXAMPLE_NAME="report.md"
 
-DEFAULT_TEMPLATE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/templates/default/default.latex?token=GHSAT0AAAAAACBVW7FYJQMI6RR465AMNYDCZCVC4EA"
+DEFAULT_TEMPLATE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/templates/default/default.latex?token=GHSAT0AAAAAACBVW7FZN2YY4BHPHAVLXPT4ZDCCLLA"
 DEFAULT_TEMPLATE_NAME="default.latex"
 DEFAULT_EXAMPLE_GIT="https://raw.githubusercontent.com/gasts/pandoc-markdown/main/examples/default/document.md?token=GHSAT0AAAAAACBVW7FY5OON4TZ6WHO34SEIZCVC4UA"
 DEFAULT_EXAMPLE_NAME="document.md"
@@ -180,7 +180,7 @@ elif [ "$1" == "--watch" ] || [ "$1" == "-w" ]; then
                 # execute pandoc command
                 filename=$(basename -- "$changed")
                 filename="${filename%.*}"
-                pandoc $filename.md -o $filename.pdf --template="default" --filter pandoc-latex-environment --resource-path=./assets/
+                pandoc $filename.md -o $filename.pdf --template="default" --filter pandoc-latex-environment --resource-path=./assets/ --listings
                 echo "Document build as $filename.pdf"
                 sleep 2
                 # delete lock file
