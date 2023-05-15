@@ -203,8 +203,15 @@ elif [ "$1" == "--watch" ] || [ "$1" == "-w" ]; then
                 filename=$(basename -- "$changed")
                 filename="${filename%.*}"
                 template_typ=$(get_template_type "$filename.md")
-                pandoc $filename.md -o $filename.pdf --template=$template_typ --filter pandoc-latex-environment --resource-path=./assets/ --listings
                 echo "Document build as $filename.pdf"
+                if [ "$template_typ" = "letter" ]; then
+                    pandoc $filename.md -o $filename.pdf --template=$template_typ
+                elif [ "$template_typ" = "eisvogel" ]; then
+                    echo "..."
+                else
+                    pandoc $filename.md -o $filename.pdf --template=$template_typ --filter pandoc-latex-environment --resource-path=./assets/ --listings
+                fi
+                
                 sleep 2
                 # delete lock file
                 rm "${LOCK_FILE}"

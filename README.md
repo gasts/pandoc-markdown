@@ -30,3 +30,4 @@ Bei jedem speichern von ```document.md``` wird das Skript automatisch ausgeführ
 
 # To-do
 * Bessere Support für Quelltexthervorhebung im Default-Mode
+* Das Eisvogel Template integrieren
