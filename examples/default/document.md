@@ -1,4 +1,5 @@
 ---
+template: "default"
 name: "Bauer"
 datum: "02.05.2023"
 fach: "Politik und Wirtschaft"

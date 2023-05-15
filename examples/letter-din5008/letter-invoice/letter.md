@@ -1,4 +1,5 @@
 ---
+template: "letter"
 lang: de
 backaddress: Erika Musterfrau, Musterstraße 1, 12345 Musterstadt
 fromname: Erika Musterfrau

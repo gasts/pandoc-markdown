@@ -1,4 +1,5 @@
 ---
+template: "eisvogel"
 title: "Example PDF"
 author: [Author]
 date: "2017-02-20"

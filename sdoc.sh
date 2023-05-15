@@ -63,12 +63,32 @@ is_pip_installed() {
     fi
 }
 
+# Function to copy script to $home/.local/sdoc
 copy_script_to_local(){
     local script_path="$(realpath $0)"
     local target_path="$HOME/.local/sdoc/$(basename $0)"
     create_directory $SYS_SCRIPT_PATH
     echo "Copying script from $script_path to $target_path"
     cp "$script_path" "$target_path"
+}
+
+# Function to check template type
+get_template_type() {
+    file_path="$1"
+    template_type="default"
+    counter=1
+    while IFS= read -r row
+    do
+        if [[ $row == template* ]]; then
+            template_type="${row#*: }"
+            break
+        fi
+        if [[ $counter -eq 5 ]]; then
+            break
+        fi
+        ((counter++))
+    done < "$file_path"
+    echo "$template_type"
 }
 
 # Function create bash alias
@@ -180,7 +200,9 @@ elif [ "$1" == "--watch" ] || [ "$1" == "-w" ]; then
                 # execute pandoc command
                 filename=$(basename -- "$changed")
                 filename="${filename%.*}"
-                pandoc $filename.md -o $filename.pdf --template="default" --filter pandoc-latex-environment --resource-path=./assets/ --listings
+                template_typ=$(get_template_type "$filename.md")
+                echo $template_typ
+                pandoc $filename.md -o $filename.pdf --template=$template_typ --filter pandoc-latex-environment --resource-path=./assets/ --listings
                 echo "Document build as $filename.pdf"
                 sleep 2
                 # delete lock file
