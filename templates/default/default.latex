@@ -34,6 +34,9 @@
 % \IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
 % \makesavenoteenv{longtable}
 
+% Code
+\usepackage{listings}
+
 % Maße der Seite
 \setlength{\parindent}{0em}
 \setlength{\headheight}{28pt}
