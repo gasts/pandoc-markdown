@@ -51,7 +51,7 @@
 
 \lstset{
     language=java,
-    basicstyle=\footnotesize\tt,
+    basicstyle=\footnotesize\ttfamily,
     showtabs=false,
     tabsize=2,
     captionpos=b,
