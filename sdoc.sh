@@ -213,7 +213,6 @@ elif [ "$1" == "--watch" ] || [ "$1" == "-w" ]; then
                     filename=$(basename -- "$changed")
                 fi
                 filename="${filename%.*}"
-                echo "EIN TEST: $filename"
                 template_typ=$(get_template_type "$filename.md")
                 echo "Document build as $filename.pdf"
                 if [ "$template_typ" = "letter" ]; then
