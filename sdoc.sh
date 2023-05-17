@@ -200,8 +200,20 @@ elif [ "$1" == "--watch" ] || [ "$1" == "-w" ]; then
                 # create lock file
                 echo $$ > "${LOCK_FILE}"
                 # execute pandoc command
-                filename=$(basename -- "$changed")
+                filename=''
+                if [ -n $2 ]; then
+                    if [ -f $2 ]; then
+                        filename=$(basename -- "$2")
+                    else
+                        echo "File: $2 not found"
+                        rm "${LOCK_FILE}"
+                        exit 1
+                    fi
+                else
+                    filename=$(basename -- "$changed")
+                fi
                 filename="${filename%.*}"
+                echo "EIN TEST: $filename"
                 template_typ=$(get_template_type "$filename.md")
                 echo "Document build as $filename.pdf"
                 if [ "$template_typ" = "letter" ]; then
@@ -228,7 +240,9 @@ elif [ "$1" == "--help" ] || [ "$1" == "-h" ]; then
     printf "${FORMAT}" "sdoc -n, --new <typ>" "typ is default, letter, invoice or eisvogel"
     printf "${FORMAT}" "sdoc -u, --update" "update templates"
     printf "${FORMAT}" "sdoc -w, --watch" "Watch for changes and build"
+    printf "${FORMAT}" "sdoc -w, --watch <file>" "Watch for changes and build <file>"
     printf "${FORMAT}" "sdoc -nw" "compination --new and --watch"
+    printf "${FORMAT}" "sdoc -nw <file>" "compination --new and --watch <file>"
 
 else
     echo "$1: invalid option"

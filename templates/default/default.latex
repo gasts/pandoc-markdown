@@ -36,6 +36,7 @@
 
 % Code
 \usepackage{listings}
+\newcommand{\passthrough}[1]{#1}
 \usepackage{color}
 
 \definecolor{listing-background}{HTML}{F7F7F7}
@@ -50,10 +51,11 @@
 \definecolor{listing-comment}{HTML}{8E8E8E}
 
 \lstset{
+    language=java,
     basicstyle=\ttfamily,
     numbers=left,
     numberstyle=\footnotesize,
-    stepnumber=2,
+    stepnumber=1,
     numbersep=5pt,
     backgroundcolor=\color{black!10},
     showspaces=false,
