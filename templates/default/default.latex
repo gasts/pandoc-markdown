@@ -1,5 +1,6 @@
 \documentclass[a4paper,12pt]{article}
 
+\usepackage[table,xcdraw]{xcolor} % farben in Tabellen
 
 \usepackage{fancyhdr} % Kopf und Fusszeile
 \usepackage[ngerman,german]{babel} % Sprachanpassung
@@ -18,6 +19,8 @@
 \usepackage{multicol}
 \usepackage[modulo]{lineno}
 \usepackage{awesomebox}
+
+
 
 \usepackage{tcolorbox}
 \newtcolorbox{info-box}{colback=cyan!5!white,arc=0pt,outer arc=0pt,colframe=cyan!60!black}
