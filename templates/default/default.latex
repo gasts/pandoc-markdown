@@ -114,9 +114,9 @@
     {\end{multicols}}
 
 % fuer center
-\newenvironment{centering}
+\newenvironment{cent}
     {\begin{center}}
-    
+
     {\end{center}}
 
 \title{}

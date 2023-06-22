@@ -18,7 +18,7 @@ pandoc-latex-environment:
     importantblock: [important]
     
     megacols: [mcol]
-    centering: [center]
+    cent: [center]
 
     tcolorbox: [box]
     info-box: [infobox]
