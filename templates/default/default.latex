@@ -113,12 +113,6 @@
     }
     {\end{multicols}}
 
-% fuer center
-\newenvironment{cent}
-    {\begin{center}}
-
-    {\end{center}}
-
 \title{}
 \author{$author$}
 
